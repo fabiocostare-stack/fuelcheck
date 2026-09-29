@@ -731,7 +731,7 @@ function onSlider(w,val){
   val=parseInt(val);const o=100-val;
   if(w==='misto'){pM=val;pA=o;document.getElementById('sliderAuto').value=o;document.getElementById('autoVal').textContent=o+'%';document.getElementById('mistoVal').textContent=val+'%';}
   else{pA=val;pM=o;document.getElementById('sliderMisto').value=o;document.getElementById('mistoVal').textContent=o+'%';document.getElementById('autoVal').textContent=val+'%';}
-  render();
+  // render();
 }
 
 function cP(c){const m=c.mi||0,a=c.au||0,t=pM+pA;return t===0?m:m*(pM/t)+a*(pA/t);}
@@ -789,7 +789,7 @@ function pick(i){
   const box=document.getElementById('sugBox');const c=box._data[i];if(!c)return;
   if(cars.includes(c)){hSug();return}
   if(cars.length>=5)cars.shift();
-  cars.push(c);document.getElementById('si').value='';hSug();render();
+  cars.push(c);document.getElementById('si').value='';hSug();// render();
 }
 function removeCar(i){cars.splice(i,1);render()}
 
@@ -953,7 +953,7 @@ async function loadMIMIT() {
     status.innerHTML = `✓ Prezzi ${regione} — MIMIT ${MIMIT_DATE}`;
     status.style.color = '#5be898';
 
-    render();
+    // render();
   } else {
     status.textContent = '✗ Regione non trovata';
     status.style.color = '#f87171';
@@ -976,7 +976,7 @@ function switchPage(p) {
     event.currentTarget.classList.add('active');
   }
   if (p === 'community') {
-    initCommunity();
+    // initCommunity();
   } else if (p === 'garage') {
     if (activeCarId) {
       renderGarage();
@@ -1040,9 +1040,26 @@ function loadGarageData() {
   }
 }
 
-function saveGarageData() {
+async function saveGarageData() {
   localStorage.setItem(garageKey('cars'),   JSON.stringify(gCars));
   localStorage.setItem(garageKey('riforn'), JSON.stringify(gRiforn));
+  
+  // Sincronizzazione con il server (Cloudflare Worker)
+  const token = localStorage.getItem('fc_user_token');
+  if (token) {
+    try {
+      await fetch(WORKER_URL + '/api/garage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ cars: gCars, riforn: gRiforn })
+      });
+    } catch (err) {
+      console.error('Errore durante il salvataggio sul cloud:', err);
+    }
+  }
 }
 
 // ── Popola select dal DB ───────────────────────────────────────
@@ -1660,17 +1677,15 @@ function renderChartSpesa(rows) {
 }
 
 // ── Init garage ────────────────────────────────────────────────
-function initGarage() {
+async function initGarage() {
 	const token = localStorage.getItem('fc_user_token');
 	  if (token) {
-		// Se l'utente è già loggato, nascondiamo la schermata di login
 		document.getElementById('auth-screen').style.display = 'none';
 	  } else {
-		// Se non è loggato, la mostriamo a schermo intero
 		document.getElementById('auth-screen').style.display = 'flex';
 	  }
   initGarageSearch();
-  loadGarageData();
+  await loadGarageData();
   renderGarageDashboard();
   setTodayDate();
 }
@@ -2063,12 +2078,12 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search-area'))hSug(
 document.addEventListener('DOMContentLoaded', () => {
   // Aggiorna contatori con numero reale dal DB
   document.getElementById('carCount').textContent = `✓ ${DB.length} auto · prezzi MIMIT live`;
-  document.getElementById('si').placeholder = `Cerca tra ${DB.length} modelli… DS, Dacia, BMW, Audi, Alfa, Citroen, Cupra…`;
+  if(document.getElementById("si")) document.getElementById("si").placeholder = `Cerca tra ${DB.length} modelli… DS, Dacia, BMW, Audi, Alfa, Citroen, Cupra…`;
   // Carica prezzi Emilia Romagna di default
-  loadMIMIT();
-  render();
+  // loadMIMIT();
+  // render();
   initGarage();
-  initCommunity();
+  // initCommunity();
 });
 </script>
 </div><!-- /page-compare -->
