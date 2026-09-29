@@ -341,80 +341,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 </div>
 
 <div class="nav-tabs">
-  <button class="nav-tab active" onclick="switchPage('compare')">⛽ Confronto</button>
-  <button class="nav-tab" onclick="switchPage('garage')">🚗 Il mio garage</button>
-  <button class="nav-tab" onclick="switchPage('community')">👥 Community</button>
+  
+  <button class="nav-tab active" onclick="switchPage('garage')">🚗 Il mio garage</button>
+  
   <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" title="Esci dall'account">⎋ Esci</button>
 </div>
-<div id="page-compare" class="page active">
-<div class="profilo-area">
-  <div class="profilo-title">⚙ Il tuo profilo di guida</div>
-  <div class="profilo-top">
-    <div class="profilo-label" style="margin-bottom:4px">Km percorsi all'anno</div>
-    <input class="profilo-input" id="kmAnno" type="number" min="1000" max="200000" step="500" value="15000" oninput="render()" style="max-width:200px"/>
-  </div>
-  <div class="profilo-label" style="margin-bottom:7px">Prezzi energia</div>
-  <div class="prezzi-grid">
-    <div class="prezzo-card" id="card-benzina"><div class="prezzo-card-label">⛽ Benzina / Ibridi</div><input class="prezzo-card-input" id="p-benzina" type="number" min="0.5" max="5" step="0.01" value="1.947" oninput="render()"/><div class="prezzo-card-unit">€ / litro</div></div>
-    <div class="prezzo-card" id="card-diesel"><div class="prezzo-card-label">🛢 Diesel</div><input class="prezzo-card-input" id="p-diesel" type="number" min="0.5" max="5" step="0.01" value="1.977" oninput="render()"/><div class="prezzo-card-unit">€ / litro</div></div>
-  </div>
-  <div class="prezzi-grid-2">
-    <div class="prezzo-card" id="card-gpl"><div class="prezzo-card-label">💧 GPL</div><input class="prezzo-card-input" id="p-gpl" type="number" min="0.3" max="2" step="0.001" value="0.808" oninput="render()"/><div class="prezzo-card-unit">€ / litro</div></div>
-    <div class="prezzo-card" id="card-metano"><div class="prezzo-card-label">🌿 Metano</div><input class="prezzo-card-input" id="p-metano" type="number" min="0.5" max="5" step="0.001" value="1.528" oninput="render()"/><div class="prezzo-card-unit">€ / kg</div></div>
-    <div class="prezzo-card" id="card-elettrica"><div class="prezzo-card-label">⚡ Elettricità</div><input class="prezzo-card-input" id="p-elettrica" type="number" min="0.05" max="1" step="0.01" value="0.27" oninput="render()"/><div class="prezzo-card-unit">€ / kWh</div></div>
-  </div>
-  <!-- MIMIT regione -->
-  <div class="mimit-row">
-    <div class="mimit-left">
-      <div class="profilo-label" style="margin-bottom:5px">📍 Prezzi medi regionali MIMIT</div>
-      <div class="mimit-controls">
-        <select class="profilo-input mimit-select" id="regioneSelect">
-          <option value="">— Seleziona regione —</option>
-          <option value="Abruzzo">Abruzzo</option>
-          <option value="Basilicata">Basilicata</option>
-          <option value="Calabria">Calabria</option>
-          <option value="Campania">Campania</option>
-          <option value="Emilia Romagna" selected>Emilia Romagna</option>
-          <option value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>
-          <option value="Lazio">Lazio</option>
-          <option value="Liguria">Liguria</option>
-          <option value="Lombardia">Lombardia</option>
-          <option value="Marche">Marche</option>
-          <option value="Molise">Molise</option>
-          <option value="Piemonte">Piemonte</option>
-          <option value="Puglia">Puglia</option>
-          <option value="Sardegna">Sardegna</option>
-          <option value="Sicilia">Sicilia</option>
-          <option value="Toscana">Toscana</option>
-          <option value="Umbria">Umbria</option>
-          <option value="Valle D'aosta">Valle d'Aosta</option>
-          <option value="Veneto">Veneto</option>
-          <option value="Bolzano">Bolzano (P.A.)</option>
-          <option value="Trento">Trento (P.A.)</option>
-        </select>
-        <button class="mimit-btn" id="mimitBtn" onclick="loadMIMIT()">⬇ Carica prezzi</button>
-      </div>
-    </div>
-    <div class="mimit-status-wrap">
-      <div id="mimitStatus" class="mimit-status"></div>
-      <a href="https://www.mimit.gov.it/it/prezzo-medio-carburanti/regioni" target="_blank" class="mimit-link">→ mimit.gov.it</a>
-    </div>
-  </div>
-  <div class="slider-wrap">
-    <div class="slider-label-row"><div class="profilo-label">🏙 Misto urbano/extraurbano</div><div class="slider-val" id="mistoVal">50%</div></div>
-    <div class="slider-row"><input type="range" id="sliderMisto" min="0" max="100" step="5" value="50" oninput="onSlider('misto',this.value)"/></div>
-    <div class="slider-label-row"><div class="profilo-label">🛣 Autostrada</div><div class="slider-val" id="autoVal">50%</div></div>
-    <div class="slider-row"><input type="range" id="sliderAuto" min="0" max="100" step="5" value="50" oninput="onSlider('auto',this.value)"/></div>
-  </div>
-</div>
-<div class="search-area">
-  <div class="search-wrap">
-    <input class="si" id="si" type="text" autocomplete="off" placeholder="Cerca tra … modelli…" oninput="onInput(this.value)" onkeydown="onKey(event)"/>
-    <div class="sug-box hidden" id="sugBox"></div>
-  </div>
-</div>
-<div id="carsList"></div>
-<div id="compareSection"></div>
+<div id="page-compare" class="page" style="display: none;">
+
 
 <script>
 const C=['#E8321A','#3b82f6','#f59e0b','#10b981','#a78bfa','#f472b6'];
@@ -2140,7 +2073,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </div><!-- /page-compare -->
 
-<div id="page-garage" class="page">
+<div id="page-garage" class="page active">
 <div class="garage-area">
 
   <!-- VISTA 1: DASHBOARD CON ELENCO AUTO -->
@@ -2326,29 +2259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 </div><!-- /page-garage -->
 
-<div id="page-community" class="page">
-<div class="comm-area">
 
-  <div class="comm-hero">
-    <div class="comm-count" id="commTotalCount">—</div>
-    <div style="font-size:11px;color:var(--muted);margin:2px 0 8px">contributi dalla community</div>
-    <div class="comm-hero-title">📊 Consumi reali verificati</div>
-    <div class="comm-hero-sub">Ogni rifornimento che inserisci nel tuo Garage contribuisce automaticamente · Almeno 5 contributi per mostrare la media</div>
-  </div>
-
-  <!-- Ricerca auto nella community -->
-  <div class="garage-section">
-    <div class="garage-title">🔍 Esplora i dati community</div>
-    <div class="comm-search-wrap">
-      <input class="comm-search" id="commSearch" placeholder="Cerca un'auto... es. Dacia Duster, Honda Civic..." oninput="filterCommResults()"/>
-    </div>
-    <div id="commResults">
-      <div class="comm-loading">⏳ Caricamento dati community...</div>
-    </div>
-  </div>
-
-</div>
-</div><!-- /page-community -->
 
 </body>
 </html>
